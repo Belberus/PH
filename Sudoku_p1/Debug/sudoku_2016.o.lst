@@ -80,7 +80,7 @@
  1827              		.loc 1 30 0
  1828              		.cfi_startproc
  1829              		@ Function supports interworking.
- 1830              		@ args = 0, pretend = 0, frame = 16
+ 1830              		@ args = 0, pretend = 0, frame = 48
  1831              		@ frame_needed = 1, uses_anonymous_args = 0
  1832 0038 0DC0A0E1 		mov	ip, sp
  1833              	.LCFI2:
@@ -92,153 +92,486 @@
  1839              		.cfi_offset 11, -16
  1840              	.LCFI3:
  1841              		.cfi_def_cfa 11, 4
- 1842 0044 10D04DE2 		sub	sp, sp, #16
- 1843 0048 18000BE5 		str	r0, [fp, #-24]
+ 1842 0044 30D04DE2 		sub	sp, sp, #48
+ 1843 0048 38000BE5 		str	r0, [fp, #-56]
  1844 004c 0230A0E1 		mov	r3, r2
  1845 0050 0120A0E1 		mov	r2, r1
- 1846 0054 19204BE5 		strb	r2, [fp, #-25]
- 1847 0058 1A304BE5 		strb	r3, [fp, #-26]
+ 1846 0054 39204BE5 		strb	r2, [fp, #-57]
+ 1847 0058 3A304BE5 		strb	r3, [fp, #-58]
   31:../sudoku_2016.c ****     /* valor que se propaga */
   32:../sudoku_2016.c ****     uint8_t valor = celda_leer_valor(cuadricula[fila][columna]);
  1848              		.loc 1 32 0
- 1849 005c 19305BE5 		ldrb	r3, [fp, #-25]	@ zero_extendqisi2
+ 1849 005c 39305BE5 		ldrb	r3, [fp, #-57]	@ zero_extendqisi2
  1850 0060 8332A0E1 		mov	r3, r3, asl #5
- 1851 0064 18201BE5 		ldr	r2, [fp, #-24]
+ 1851 0064 38201BE5 		ldr	r2, [fp, #-56]
  1852 0068 032082E0 		add	r2, r2, r3
- 1853 006c 1A305BE5 		ldrb	r3, [fp, #-26]	@ zero_extendqisi2
+ 1853 006c 3A305BE5 		ldrb	r3, [fp, #-58]	@ zero_extendqisi2
  1854 0070 8330A0E1 		mov	r3, r3, asl #1
  1855 0074 033082E0 		add	r3, r2, r3
  1856 0078 B030D3E1 		ldrh	r3, [r3, #0]
  1857 007c 0300A0E1 		mov	r0, r3
  1858 0080 DEFFFFEB 		bl	celda_leer_valor
  1859 0084 0030A0E1 		mov	r3, r0
- 1860 0088 0D304BE5 		strb	r3, [fp, #-13]
-  33:../sudoku_2016.c **** 
-  34:../sudoku_2016.c ****     /* recorrer fila descartando valor de listas candidatos */
-  35:../sudoku_2016.c ****     /* recorrer columna descartando valor de listas candidatos */
-  36:../sudoku_2016.c ****     /* recorrer region descartando valor de listas candidatos */
-  37:../sudoku_2016.c **** }
- 1861              		.loc 1 37 0
- 1862 008c 0CD04BE2 		sub	sp, fp, #12
- 1863 0090 00689DE8 		ldmfd	sp, {fp, sp, lr}
- 1864 0094 1EFF2FE1 		bx	lr
- 1865              		.cfi_endproc
- 1866              	.LFE2:
- 1868              		.align	2
- 1870              	sudoku_candidatos_init_c:
- 1871              	.LFB3:
-  38:../sudoku_2016.c **** 
-  39:../sudoku_2016.c **** /* *****************************************************************************
-  40:../sudoku_2016.c ****  * calcula todas las listas de candidatos (9x9)
-  41:../sudoku_2016.c ****  * necesario tras borrar o cambiar un valor (listas corrompidas)
-  42:../sudoku_2016.c ****  * retorna el numero de celdas vacias */
-  43:../sudoku_2016.c **** static int
-  44:../sudoku_2016.c **** sudoku_candidatos_init_c(CELDA cuadricula[NUM_FILAS][NUM_COLUMNAS])
-  45:../sudoku_2016.c **** {
- 1872              		.loc 1 45 0
- 1873              		.cfi_startproc
- 1874              		@ Function supports interworking.
- 1875              		@ args = 0, pretend = 0, frame = 16
- 1876              		@ frame_needed = 1, uses_anonymous_args = 0
- 1877 0098 0DC0A0E1 		mov	ip, sp
- 1878              	.LCFI4:
- 1879              		.cfi_def_cfa_register 12
- 1880 009c 00D82DE9 		stmfd	sp!, {fp, ip, lr, pc}
- 1881 00a0 04B04CE2 		sub	fp, ip, #4
- 1882              		.cfi_offset 14, -8
- 1883              		.cfi_offset 13, -12
- 1884              		.cfi_offset 11, -16
- 1885              	.LCFI5:
- 1886              		.cfi_def_cfa 11, 4
- 1887 00a4 10D04DE2 		sub	sp, sp, #16
- 1888 00a8 18000BE5 		str	r0, [fp, #-24]
-  46:../sudoku_2016.c ****     int celdas_vacias = 0;
- 1889              		.loc 1 46 0
- 1890 00ac 0030A0E3 		mov	r3, #0
- 1891 00b0 10300BE5 		str	r3, [fp, #-16]
-  47:../sudoku_2016.c **** 
-  48:../sudoku_2016.c ****     /* recorrer cuadricula celda a celda */
-  49:../sudoku_2016.c ****         /* inicializa lista de candidatos */
-  50:../sudoku_2016.c **** 
-  51:../sudoku_2016.c **** 
-  52:../sudoku_2016.c ****     /* recorrer cuadricula celda a celda */
-  53:../sudoku_2016.c ****         /* si celda tiene valor */
-  54:../sudoku_2016.c ****         /*    sudoku_candidatos_propagar_c(...); */
-  55:../sudoku_2016.c ****         /* else actualizar contador de celdas vacias */
-  56:../sudoku_2016.c **** 
-  57:../sudoku_2016.c ****     /* retorna el numero de celdas vacias */
-  58:../sudoku_2016.c ****     return (celdas_vacias);
- 1892              		.loc 1 58 0
- 1893 00b4 10301BE5 		ldr	r3, [fp, #-16]
+ 1860 0088 19304BE5 		strb	r3, [fp, #-25]
+  33:../sudoku_2016.c ****     /* filtro base rotado "valor" veces */
+  34:../sudoku_2016.c ****     uint16_t filtro = (0x0008 << (valor));
+ 1861              		.loc 1 34 0
+ 1862 008c 19305BE5 		ldrb	r3, [fp, #-25]	@ zero_extendqisi2
+ 1863 0090 0820A0E3 		mov	r2, #8
+ 1864 0094 1233A0E1 		mov	r3, r2, asl r3
+ 1865 0098 BC314BE1 		strh	r3, [fp, #-28]	@ movhi
+  35:../sudoku_2016.c ****     /* nuevo valor */
+  36:../sudoku_2016.c ****     uint16_t nuevoValor = ~filtro;
+ 1866              		.loc 1 36 0
+ 1867 009c BC315BE1 		ldrh	r3, [fp, #-28]	@ movhi
+ 1868 00a0 0330E0E1 		mvn	r3, r3
+ 1869 00a4 BE314BE1 		strh	r3, [fp, #-30]	@ movhi
+  37:../sudoku_2016.c **** 
+  38:../sudoku_2016.c ****     int i,x,y;
+  39:../sudoku_2016.c **** 
+  40:../sudoku_2016.c ****     /* recorrer fila descartando valor de listas candidatos */
+  41:../sudoku_2016.c ****     for(i=0; i<9;i++){
+ 1870              		.loc 1 41 0
+ 1871 00a8 0030A0E3 		mov	r3, #0
+ 1872 00ac 10300BE5 		str	r3, [fp, #-16]
+ 1873 00b0 160000EA 		b	.L3
+ 1874              	.L4:
+  42:../sudoku_2016.c ****     	cuadricula[fila][i] = (cuadricula[fila][i] & nuevoValor);
+ 1875              		.loc 1 42 0 discriminator 2
+ 1876 00b4 39305BE5 		ldrb	r3, [fp, #-57]	@ zero_extendqisi2
+ 1877 00b8 8332A0E1 		mov	r3, r3, asl #5
+ 1878 00bc 38201BE5 		ldr	r2, [fp, #-56]
+ 1879 00c0 031082E0 		add	r1, r2, r3
+ 1880 00c4 39305BE5 		ldrb	r3, [fp, #-57]	@ zero_extendqisi2
+ 1881 00c8 8332A0E1 		mov	r3, r3, asl #5
+ 1882 00cc 38201BE5 		ldr	r2, [fp, #-56]
+ 1883 00d0 032082E0 		add	r2, r2, r3
+ 1884 00d4 10301BE5 		ldr	r3, [fp, #-16]
+ 1885 00d8 8330A0E1 		mov	r3, r3, asl #1
+ 1886 00dc 033082E0 		add	r3, r2, r3
+ 1887 00e0 B020D3E1 		ldrh	r2, [r3, #0]
+ 1888 00e4 BE315BE1 		ldrh	r3, [fp, #-30]	@ movhi
+ 1889 00e8 033002E0 		and	r3, r2, r3
+ 1890 00ec 0338A0E1 		mov	r3, r3, asl #16
+ 1891 00f0 2328A0E1 		mov	r2, r3, lsr #16
+ 1892 00f4 10301BE5 		ldr	r3, [fp, #-16]
+ 1893 00f8 8330A0E1 		mov	r3, r3, asl #1
+ 1894 00fc 033081E0 		add	r3, r1, r3
+ 1895 0100 B020C3E1 		strh	r2, [r3, #0]	@ movhi
+  41:../sudoku_2016.c ****     for(i=0; i<9;i++){
+ 1896              		.loc 1 41 0 discriminator 2
+ 1897 0104 10301BE5 		ldr	r3, [fp, #-16]
+ 1898 0108 013083E2 		add	r3, r3, #1
+ 1899 010c 10300BE5 		str	r3, [fp, #-16]
+ 1900              	.L3:
+  41:../sudoku_2016.c ****     for(i=0; i<9;i++){
+ 1901              		.loc 1 41 0 is_stmt 0 discriminator 1
+ 1902 0110 10301BE5 		ldr	r3, [fp, #-16]
+ 1903 0114 080053E3 		cmp	r3, #8
+ 1904 0118 E5FFFFDA 		ble	.L4
+  43:../sudoku_2016.c ****     }
+  44:../sudoku_2016.c ****     /* recorrer columna descartando valor de listas candidatos */
+  45:../sudoku_2016.c ****     for(i=0; i<NUM_FILAS;i++){
+ 1905              		.loc 1 45 0 is_stmt 1
+ 1906 011c 0030A0E3 		mov	r3, #0
+ 1907 0120 10300BE5 		str	r3, [fp, #-16]
+ 1908 0124 160000EA 		b	.L5
+ 1909              	.L6:
+  46:../sudoku_2016.c ****         	cuadricula[i][columna] = (cuadricula[i][columna] & nuevoValor);
+ 1910              		.loc 1 46 0 discriminator 2
+ 1911 0128 10301BE5 		ldr	r3, [fp, #-16]
+ 1912 012c 8332A0E1 		mov	r3, r3, asl #5
+ 1913 0130 38201BE5 		ldr	r2, [fp, #-56]
+ 1914 0134 031082E0 		add	r1, r2, r3
+ 1915 0138 3A305BE5 		ldrb	r3, [fp, #-58]	@ zero_extendqisi2
+ 1916 013c 10201BE5 		ldr	r2, [fp, #-16]
+ 1917 0140 8222A0E1 		mov	r2, r2, asl #5
+ 1918 0144 38001BE5 		ldr	r0, [fp, #-56]
+ 1919 0148 020080E0 		add	r0, r0, r2
+ 1920 014c 3A205BE5 		ldrb	r2, [fp, #-58]	@ zero_extendqisi2
+ 1921 0150 8220A0E1 		mov	r2, r2, asl #1
+ 1922 0154 022080E0 		add	r2, r0, r2
+ 1923 0158 B000D2E1 		ldrh	r0, [r2, #0]
+ 1924 015c BE215BE1 		ldrh	r2, [fp, #-30]	@ movhi
+ 1925 0160 022000E0 		and	r2, r0, r2
+ 1926 0164 0228A0E1 		mov	r2, r2, asl #16
+ 1927 0168 2228A0E1 		mov	r2, r2, lsr #16
+ 1928 016c 8330A0E1 		mov	r3, r3, asl #1
+ 1929 0170 033081E0 		add	r3, r1, r3
+ 1930 0174 B020C3E1 		strh	r2, [r3, #0]	@ movhi
+  45:../sudoku_2016.c ****     for(i=0; i<NUM_FILAS;i++){
+ 1931              		.loc 1 45 0 discriminator 2
+ 1932 0178 10301BE5 		ldr	r3, [fp, #-16]
+ 1933 017c 013083E2 		add	r3, r3, #1
+ 1934 0180 10300BE5 		str	r3, [fp, #-16]
+ 1935              	.L5:
+  45:../sudoku_2016.c ****     for(i=0; i<NUM_FILAS;i++){
+ 1936              		.loc 1 45 0 is_stmt 0 discriminator 1
+ 1937 0184 10301BE5 		ldr	r3, [fp, #-16]
+ 1938 0188 080053E3 		cmp	r3, #8
+ 1939 018c E5FFFFDA 		ble	.L6
+  47:../sudoku_2016.c ****     }
+  48:../sudoku_2016.c ****     /* recorrer region descartando valor de listas candidatos */
+  49:../sudoku_2016.c ****     int cuadrante_i = fila / 3;    // Nos dara el cuadrante en el eje Y en el que esta (1 = fila 1,
+ 1940              		.loc 1 49 0 is_stmt 1
+ 1941 0190 39205BE5 		ldrb	r2, [fp, #-57]	@ zero_extendqisi2
+ 1942 0194 00319FE5 		ldr	r3, .L11
+ 1943 0198 921383E0 		umull	r1, r3, r2, r3
+ 1944 019c A330A0E1 		mov	r3, r3, lsr #1
+ 1945 01a0 FF3003E2 		and	r3, r3, #255
+ 1946 01a4 24300BE5 		str	r3, [fp, #-36]
+  50:../sudoku_2016.c ****     int cuadrante_j = columna / 3;    // Nos dara el cuadrante en el eje X en el que esta (1 = colu
+ 1947              		.loc 1 50 0
+ 1948 01a8 3A205BE5 		ldrb	r2, [fp, #-58]	@ zero_extendqisi2
+ 1949 01ac E8309FE5 		ldr	r3, .L11
+ 1950 01b0 921383E0 		umull	r1, r3, r2, r3
+ 1951 01b4 A330A0E1 		mov	r3, r3, lsr #1
+ 1952 01b8 FF3003E2 		and	r3, r3, #255
+ 1953 01bc 28300BE5 		str	r3, [fp, #-40]
+  51:../sudoku_2016.c ****     int inicio_i = (cuadrante_i * 3);   // Segun el cuadrante empezaremos en una posicion u otra
+ 1954              		.loc 1 51 0
+ 1955 01c0 24201BE5 		ldr	r2, [fp, #-36]
+ 1956 01c4 0230A0E1 		mov	r3, r2
+ 1957 01c8 8330A0E1 		mov	r3, r3, asl #1
+ 1958 01cc 023083E0 		add	r3, r3, r2
+ 1959 01d0 2C300BE5 		str	r3, [fp, #-44]
+  52:../sudoku_2016.c ****     int inicio_j = (cuadrante_j * 3);   // Segun el cuadrante empezaremos en una posicion u otra
+ 1960              		.loc 1 52 0
+ 1961 01d4 28201BE5 		ldr	r2, [fp, #-40]
+ 1962 01d8 0230A0E1 		mov	r3, r2
+ 1963 01dc 8330A0E1 		mov	r3, r3, asl #1
+ 1964 01e0 023083E0 		add	r3, r3, r2
+ 1965 01e4 30300BE5 		str	r3, [fp, #-48]
+  53:../sudoku_2016.c **** 
+  54:../sudoku_2016.c ****     for (y = inicio_i; y<= inicio_i +2; y++){  // Recorremos desde fila inicial (del cuadrante en c
+ 1966              		.loc 1 54 0
+ 1967 01e8 2C301BE5 		ldr	r3, [fp, #-44]
+ 1968 01ec 18300BE5 		str	r3, [fp, #-24]
+ 1969 01f0 210000EA 		b	.L7
+ 1970              	.L10:
+  55:../sudoku_2016.c ****         for (x = inicio_j; x<=inicio_j +2; x++){     // Recorremos desde columna inicial (del cuadr
+ 1971              		.loc 1 55 0
+ 1972 01f4 30301BE5 		ldr	r3, [fp, #-48]
+ 1973 01f8 14300BE5 		str	r3, [fp, #-20]
+ 1974 01fc 160000EA 		b	.L8
+ 1975              	.L9:
+  56:../sudoku_2016.c ****             cuadricula[y][x] = (cuadricula[y][x] & nuevoValor); // Aplicamos el filtrado como en lo
+ 1976              		.loc 1 56 0 discriminator 2
+ 1977 0200 18301BE5 		ldr	r3, [fp, #-24]
+ 1978 0204 8332A0E1 		mov	r3, r3, asl #5
+ 1979 0208 38201BE5 		ldr	r2, [fp, #-56]
+ 1980 020c 031082E0 		add	r1, r2, r3
+ 1981 0210 18301BE5 		ldr	r3, [fp, #-24]
+ 1982 0214 8332A0E1 		mov	r3, r3, asl #5
+ 1983 0218 38201BE5 		ldr	r2, [fp, #-56]
+ 1984 021c 032082E0 		add	r2, r2, r3
+ 1985 0220 14301BE5 		ldr	r3, [fp, #-20]
+ 1986 0224 8330A0E1 		mov	r3, r3, asl #1
+ 1987 0228 033082E0 		add	r3, r2, r3
+ 1988 022c B020D3E1 		ldrh	r2, [r3, #0]
+ 1989 0230 BE315BE1 		ldrh	r3, [fp, #-30]	@ movhi
+ 1990 0234 033002E0 		and	r3, r2, r3
+ 1991 0238 0338A0E1 		mov	r3, r3, asl #16
+ 1992 023c 2328A0E1 		mov	r2, r3, lsr #16
+ 1993 0240 14301BE5 		ldr	r3, [fp, #-20]
+ 1994 0244 8330A0E1 		mov	r3, r3, asl #1
+ 1995 0248 033081E0 		add	r3, r1, r3
+ 1996 024c B020C3E1 		strh	r2, [r3, #0]	@ movhi
+  55:../sudoku_2016.c ****         for (x = inicio_j; x<=inicio_j +2; x++){     // Recorremos desde columna inicial (del cuadr
+ 1997              		.loc 1 55 0 discriminator 2
+ 1998 0250 14301BE5 		ldr	r3, [fp, #-20]
+ 1999 0254 013083E2 		add	r3, r3, #1
+ 2000 0258 14300BE5 		str	r3, [fp, #-20]
+ 2001              	.L8:
+  55:../sudoku_2016.c ****         for (x = inicio_j; x<=inicio_j +2; x++){     // Recorremos desde columna inicial (del cuadr
+ 2002              		.loc 1 55 0 is_stmt 0 discriminator 1
+ 2003 025c 30301BE5 		ldr	r3, [fp, #-48]
+ 2004 0260 022083E2 		add	r2, r3, #2
+ 2005 0264 14301BE5 		ldr	r3, [fp, #-20]
+ 2006 0268 030052E1 		cmp	r2, r3
+ 2007 026c E3FFFFAA 		bge	.L9
+  54:../sudoku_2016.c ****     for (y = inicio_i; y<= inicio_i +2; y++){  // Recorremos desde fila inicial (del cuadrante en c
+ 2008              		.loc 1 54 0 is_stmt 1
+ 2009 0270 18301BE5 		ldr	r3, [fp, #-24]
+ 2010 0274 013083E2 		add	r3, r3, #1
+ 2011 0278 18300BE5 		str	r3, [fp, #-24]
+ 2012              	.L7:
+  54:../sudoku_2016.c ****     for (y = inicio_i; y<= inicio_i +2; y++){  // Recorremos desde fila inicial (del cuadrante en c
+ 2013              		.loc 1 54 0 is_stmt 0 discriminator 1
+ 2014 027c 2C301BE5 		ldr	r3, [fp, #-44]
+ 2015 0280 022083E2 		add	r2, r3, #2
+ 2016 0284 18301BE5 		ldr	r3, [fp, #-24]
+ 2017 0288 030052E1 		cmp	r2, r3
+ 2018 028c D8FFFFAA 		bge	.L10
+  57:../sudoku_2016.c ****         }
+  58:../sudoku_2016.c ****     }
   59:../sudoku_2016.c **** }
- 1894              		.loc 1 59 0
- 1895 00b8 0300A0E1 		mov	r0, r3
- 1896 00bc 0CD04BE2 		sub	sp, fp, #12
- 1897 00c0 00689DE8 		ldmfd	sp, {fp, sp, lr}
- 1898 00c4 1EFF2FE1 		bx	lr
- 1899              		.cfi_endproc
- 1900              	.LFE3:
- 1902              		.align	2
- 1903              		.global	sudoku9x9
- 1905              	sudoku9x9:
- 1906              	.LFB4:
+ 2019              		.loc 1 59 0 is_stmt 1
+ 2020 0290 0CD04BE2 		sub	sp, fp, #12
+ 2021 0294 00689DE8 		ldmfd	sp, {fp, sp, lr}
+ 2022 0298 1EFF2FE1 		bx	lr
+ 2023              	.L12:
+ 2024              		.align	2
+ 2025              	.L11:
+ 2026 029c ABAAAAAA 		.word	-1431655765
+ 2027              		.cfi_endproc
+ 2028              	.LFE2:
+ 2030              		.align	2
+ 2032              	sudoku_candidatos_init_c:
+ 2033              	.LFB3:
   60:../sudoku_2016.c **** 
   61:../sudoku_2016.c **** /* *****************************************************************************
-  62:../sudoku_2016.c ****  * Funciones públicas
-  63:../sudoku_2016.c ****  * (pueden ser invocadas desde otro fichero) */
-  64:../sudoku_2016.c **** 
-  65:../sudoku_2016.c **** /* *****************************************************************************
-  66:../sudoku_2016.c ****  * programa principal del juego que recibe el tablero,
-  67:../sudoku_2016.c ****  * y la señal de ready que indica que se han actualizado fila y columna */
-  68:../sudoku_2016.c **** void
-  69:../sudoku_2016.c **** sudoku9x9(CELDA cuadricula[NUM_FILAS][NUM_COLUMNAS], char *ready)
-  70:../sudoku_2016.c **** {
- 1907              		.loc 1 70 0
- 1908              		.cfi_startproc
- 1909              		@ Function supports interworking.
- 1910              		@ args = 0, pretend = 0, frame = 16
- 1911              		@ frame_needed = 1, uses_anonymous_args = 0
- 1912 00c8 0DC0A0E1 		mov	ip, sp
- 1913              	.LCFI6:
- 1914              		.cfi_def_cfa_register 12
- 1915 00cc 00D82DE9 		stmfd	sp!, {fp, ip, lr, pc}
- 1916 00d0 04B04CE2 		sub	fp, ip, #4
- 1917              		.cfi_offset 14, -8
- 1918              		.cfi_offset 13, -12
- 1919              		.cfi_offset 11, -16
- 1920              	.LCFI7:
- 1921              		.cfi_def_cfa 11, 4
- 1922 00d4 10D04DE2 		sub	sp, sp, #16
- 1923 00d8 18000BE5 		str	r0, [fp, #-24]
- 1924 00dc 1C100BE5 		str	r1, [fp, #-28]
-  71:../sudoku_2016.c ****     int celdas_vacias;     //numero de celdas aun vacias
-  72:../sudoku_2016.c **** 
-  73:../sudoku_2016.c ****     /* calcula lista de candidatos, versión C */
-  74:../sudoku_2016.c ****     celdas_vacias = sudoku_candidatos_init_c(cuadricula);
- 1925              		.loc 1 74 0
- 1926 00e0 18001BE5 		ldr	r0, [fp, #-24]
- 1927 00e4 EBFFFFEB 		bl	sudoku_candidatos_init_c
- 1928 00e8 10000BE5 		str	r0, [fp, #-16]
-  75:../sudoku_2016.c **** 
-  76:../sudoku_2016.c ****     /* verificar que la lista de candidatos calculada es correcta */
-  77:../sudoku_2016.c ****     /* cuadricula_candidatos_verificar(...) */
-  78:../sudoku_2016.c **** 
-  79:../sudoku_2016.c ****     /* repetir para otras versiones (C optimizado, ARM, THUMB) */
-  80:../sudoku_2016.c **** }
- 1929              		.loc 1 80 0
- 1930 00ec 0CD04BE2 		sub	sp, fp, #12
- 1931 00f0 00689DE8 		ldmfd	sp, {fp, sp, lr}
- 1932 00f4 1EFF2FE1 		bx	lr
- 1933              		.cfi_endproc
- 1934              	.LFE4:
- 1936              	.Letext0:
+  62:../sudoku_2016.c ****  * calcula todas las listas de candidatos (9x9)
+  63:../sudoku_2016.c ****  * necesario tras borrar o cambiar un valor (listas corrompidas)
+  64:../sudoku_2016.c ****  * retorna el numero de celdas vacias */
+  65:../sudoku_2016.c **** static int
+  66:../sudoku_2016.c **** sudoku_candidatos_init_c(CELDA cuadricula[NUM_FILAS][NUM_COLUMNAS])
+  67:../sudoku_2016.c **** {
+ 2034              		.loc 1 67 0
+ 2035              		.cfi_startproc
+ 2036              		@ Function supports interworking.
+ 2037              		@ args = 0, pretend = 0, frame = 24
+ 2038              		@ frame_needed = 1, uses_anonymous_args = 0
+ 2039 02a0 0DC0A0E1 		mov	ip, sp
+ 2040              	.LCFI4:
+ 2041              		.cfi_def_cfa_register 12
+ 2042 02a4 00D82DE9 		stmfd	sp!, {fp, ip, lr, pc}
+ 2043 02a8 04B04CE2 		sub	fp, ip, #4
+ 2044              		.cfi_offset 14, -8
+ 2045              		.cfi_offset 13, -12
+ 2046              		.cfi_offset 11, -16
+ 2047              	.LCFI5:
+ 2048              		.cfi_def_cfa 11, 4
+ 2049 02ac 18D04DE2 		sub	sp, sp, #24
+ 2050 02b0 20000BE5 		str	r0, [fp, #-32]
+  68:../sudoku_2016.c ****     int celdas_vacias = 0;
+ 2051              		.loc 1 68 0
+ 2052 02b4 0030A0E3 		mov	r3, #0
+ 2053 02b8 10300BE5 		str	r3, [fp, #-16]
+  69:../sudoku_2016.c ****     int i,j;
+  70:../sudoku_2016.c ****     /* recorrer cuadricula celda a celda */
+  71:../sudoku_2016.c ****         /* inicializa lista de candidatos */
+  72:../sudoku_2016.c **** 	for(i=0; i<NUM_FILAS;i++){
+ 2054              		.loc 1 72 0
+ 2055 02bc 0030A0E3 		mov	r3, #0
+ 2056 02c0 14300BE5 		str	r3, [fp, #-20]
+ 2057 02c4 220000EA 		b	.L14
+ 2058              	.L18:
+  73:../sudoku_2016.c **** 		for(j=0; j<9;j++){
+ 2059              		.loc 1 73 0
+ 2060 02c8 0030A0E3 		mov	r3, #0
+ 2061 02cc 18300BE5 		str	r3, [fp, #-24]
+ 2062 02d0 190000EA 		b	.L15
+ 2063              	.L17:
+  74:../sudoku_2016.c **** 			if ((cuadricula[i][j] & 0x8000) != 0x8000){	 //Si el bit P es igual a 0, inicializamos candidato
+ 2064              		.loc 1 74 0
+ 2065 02d4 14301BE5 		ldr	r3, [fp, #-20]
+ 2066 02d8 8332A0E1 		mov	r3, r3, asl #5
+ 2067 02dc 20201BE5 		ldr	r2, [fp, #-32]
+ 2068 02e0 032082E0 		add	r2, r2, r3
+ 2069 02e4 18301BE5 		ldr	r3, [fp, #-24]
+ 2070 02e8 8330A0E1 		mov	r3, r3, asl #1
+ 2071 02ec 033082E0 		add	r3, r2, r3
+ 2072 02f0 B030D3E1 		ldrh	r3, [r3, #0]
+ 2073 02f4 0338A0E1 		mov	r3, r3, asl #16
+ 2074 02f8 2338A0E1 		mov	r3, r3, lsr #16
+ 2075 02fc 0338A0E1 		mov	r3, r3, asl #16
+ 2076 0300 4338A0E1 		mov	r3, r3, asr #16
+ 2077 0304 000053E3 		cmp	r3, #0
+ 2078 0308 080000BA 		blt	.L16
+  75:../sudoku_2016.c **** 				cuadricula[i][j] = 0x1FF0;
+ 2079              		.loc 1 75 0
+ 2080 030c 14301BE5 		ldr	r3, [fp, #-20]
+ 2081 0310 8332A0E1 		mov	r3, r3, asl #5
+ 2082 0314 20201BE5 		ldr	r2, [fp, #-32]
+ 2083 0318 032082E0 		add	r2, r2, r3
+ 2084 031c 18301BE5 		ldr	r3, [fp, #-24]
+ 2085 0320 8330A0E1 		mov	r3, r3, asl #1
+ 2086 0324 033082E0 		add	r3, r2, r3
+ 2087 0328 F4209FE5 		ldr	r2, .L25
+ 2088 032c B020C3E1 		strh	r2, [r3, #0]	@ movhi
+ 2089              	.L16:
+  73:../sudoku_2016.c **** 		for(j=0; j<9;j++){
+ 2090              		.loc 1 73 0
+ 2091 0330 18301BE5 		ldr	r3, [fp, #-24]
+ 2092 0334 013083E2 		add	r3, r3, #1
+ 2093 0338 18300BE5 		str	r3, [fp, #-24]
+ 2094              	.L15:
+  73:../sudoku_2016.c **** 		for(j=0; j<9;j++){
+ 2095              		.loc 1 73 0 is_stmt 0 discriminator 1
+ 2096 033c 18301BE5 		ldr	r3, [fp, #-24]
+ 2097 0340 080053E3 		cmp	r3, #8
+ 2098 0344 E2FFFFDA 		ble	.L17
+  72:../sudoku_2016.c **** 	for(i=0; i<NUM_FILAS;i++){
+ 2099              		.loc 1 72 0 is_stmt 1
+ 2100 0348 14301BE5 		ldr	r3, [fp, #-20]
+ 2101 034c 013083E2 		add	r3, r3, #1
+ 2102 0350 14300BE5 		str	r3, [fp, #-20]
+ 2103              	.L14:
+  72:../sudoku_2016.c **** 	for(i=0; i<NUM_FILAS;i++){
+ 2104              		.loc 1 72 0 is_stmt 0 discriminator 1
+ 2105 0354 14301BE5 		ldr	r3, [fp, #-20]
+ 2106 0358 080053E3 		cmp	r3, #8
+ 2107 035c D9FFFFDA 		ble	.L18
+  76:../sudoku_2016.c **** 			}
+  77:../sudoku_2016.c **** 		}
+  78:../sudoku_2016.c **** 	}
+  79:../sudoku_2016.c ****     /* recorrer cuadricula celda a celda */
+  80:../sudoku_2016.c ****         /* si celda tiene valor */
+  81:../sudoku_2016.c ****         /*    sudoku_candidatos_propagar_c(...); */
+  82:../sudoku_2016.c ****         /* else actualizar contador de celdas vacias */
+  83:../sudoku_2016.c **** 
+  84:../sudoku_2016.c **** 	for(i=0; i<NUM_FILAS;i++){
+ 2108              		.loc 1 84 0 is_stmt 1
+ 2109 0360 0030A0E3 		mov	r3, #0
+ 2110 0364 14300BE5 		str	r3, [fp, #-20]
+ 2111 0368 250000EA 		b	.L19
+ 2112              	.L24:
+  85:../sudoku_2016.c **** 		for(j=0; j<9;j++){		// Aunque haya 16 columnas, miramos solo las 9 que nos interesan
+ 2113              		.loc 1 85 0
+ 2114 036c 0030A0E3 		mov	r3, #0
+ 2115 0370 18300BE5 		str	r3, [fp, #-24]
+ 2116 0374 1C0000EA 		b	.L20
+ 2117              	.L23:
+  86:../sudoku_2016.c **** 			if ((cuadricula[i][j] & 0x8000) == 0x8000){	 //Si el bit P es igual a 1, hay que propagar (limpi
+ 2118              		.loc 1 86 0
+ 2119 0378 14301BE5 		ldr	r3, [fp, #-20]
+ 2120 037c 8332A0E1 		mov	r3, r3, asl #5
+ 2121 0380 20201BE5 		ldr	r2, [fp, #-32]
+ 2122 0384 032082E0 		add	r2, r2, r3
+ 2123 0388 18301BE5 		ldr	r3, [fp, #-24]
+ 2124 038c 8330A0E1 		mov	r3, r3, asl #1
+ 2125 0390 033082E0 		add	r3, r2, r3
+ 2126 0394 B030D3E1 		ldrh	r3, [r3, #0]
+ 2127 0398 0338A0E1 		mov	r3, r3, asl #16
+ 2128 039c 2338A0E1 		mov	r3, r3, lsr #16
+ 2129 03a0 0338A0E1 		mov	r3, r3, asl #16
+ 2130 03a4 4338A0E1 		mov	r3, r3, asr #16
+ 2131 03a8 000053E3 		cmp	r3, #0
+ 2132 03ac 080000AA 		bge	.L21
+  87:../sudoku_2016.c **** 				sudoku_candidatos_propagar_c(cuadricula,i,j);
+ 2133              		.loc 1 87 0
+ 2134 03b0 14301BE5 		ldr	r3, [fp, #-20]
+ 2135 03b4 FF2003E2 		and	r2, r3, #255
+ 2136 03b8 18301BE5 		ldr	r3, [fp, #-24]
+ 2137 03bc FF3003E2 		and	r3, r3, #255
+ 2138 03c0 20001BE5 		ldr	r0, [fp, #-32]
+ 2139 03c4 0210A0E1 		mov	r1, r2
+ 2140 03c8 0320A0E1 		mov	r2, r3
+ 2141 03cc 19FFFFEB 		bl	sudoku_candidatos_propagar_c
+ 2142 03d0 020000EA 		b	.L22
+ 2143              	.L21:
+  88:../sudoku_2016.c **** 			}else celdas_vacias++;
+ 2144              		.loc 1 88 0
+ 2145 03d4 10301BE5 		ldr	r3, [fp, #-16]
+ 2146 03d8 013083E2 		add	r3, r3, #1
+ 2147 03dc 10300BE5 		str	r3, [fp, #-16]
+ 2148              	.L22:
+  85:../sudoku_2016.c **** 		for(j=0; j<9;j++){		// Aunque haya 16 columnas, miramos solo las 9 que nos interesan
+ 2149              		.loc 1 85 0
+ 2150 03e0 18301BE5 		ldr	r3, [fp, #-24]
+ 2151 03e4 013083E2 		add	r3, r3, #1
+ 2152 03e8 18300BE5 		str	r3, [fp, #-24]
+ 2153              	.L20:
+  85:../sudoku_2016.c **** 		for(j=0; j<9;j++){		// Aunque haya 16 columnas, miramos solo las 9 que nos interesan
+ 2154              		.loc 1 85 0 is_stmt 0 discriminator 1
+ 2155 03ec 18301BE5 		ldr	r3, [fp, #-24]
+ 2156 03f0 080053E3 		cmp	r3, #8
+ 2157 03f4 DFFFFFDA 		ble	.L23
+  84:../sudoku_2016.c **** 	for(i=0; i<NUM_FILAS;i++){
+ 2158              		.loc 1 84 0 is_stmt 1
+ 2159 03f8 14301BE5 		ldr	r3, [fp, #-20]
+ 2160 03fc 013083E2 		add	r3, r3, #1
+ 2161 0400 14300BE5 		str	r3, [fp, #-20]
+ 2162              	.L19:
+  84:../sudoku_2016.c **** 	for(i=0; i<NUM_FILAS;i++){
+ 2163              		.loc 1 84 0 is_stmt 0 discriminator 1
+ 2164 0404 14301BE5 		ldr	r3, [fp, #-20]
+ 2165 0408 080053E3 		cmp	r3, #8
+ 2166 040c D6FFFFDA 		ble	.L24
+  89:../sudoku_2016.c **** 		}
+  90:../sudoku_2016.c **** 	}
+  91:../sudoku_2016.c ****     /* retorna el numero de celdas vacias */
+  92:../sudoku_2016.c ****     return (celdas_vacias);
+ 2167              		.loc 1 92 0 is_stmt 1
+ 2168 0410 10301BE5 		ldr	r3, [fp, #-16]
+  93:../sudoku_2016.c **** }
+ 2169              		.loc 1 93 0
+ 2170 0414 0300A0E1 		mov	r0, r3
+ 2171 0418 0CD04BE2 		sub	sp, fp, #12
+ 2172 041c 00689DE8 		ldmfd	sp, {fp, sp, lr}
+ 2173 0420 1EFF2FE1 		bx	lr
+ 2174              	.L26:
+ 2175              		.align	2
+ 2176              	.L25:
+ 2177 0424 F01F0000 		.word	8176
+ 2178              		.cfi_endproc
+ 2179              	.LFE3:
+ 2181              		.align	2
+ 2182              		.global	sudoku9x9
+ 2184              	sudoku9x9:
+ 2185              	.LFB4:
+  94:../sudoku_2016.c **** 
+  95:../sudoku_2016.c **** /* *****************************************************************************
+  96:../sudoku_2016.c ****  * Funciones públicas
+  97:../sudoku_2016.c ****  * (pueden ser invocadas desde otro fichero) */
+  98:../sudoku_2016.c **** 
+  99:../sudoku_2016.c **** /* *****************************************************************************
+ 100:../sudoku_2016.c ****  * programa principal del juego que recibe el tablero,
+ 101:../sudoku_2016.c ****  * y la señal de ready que indica que se han actualizado fila y columna */
+ 102:../sudoku_2016.c **** void
+ 103:../sudoku_2016.c **** sudoku9x9(CELDA cuadricula[NUM_FILAS][NUM_COLUMNAS], char *ready)
+ 104:../sudoku_2016.c **** {
+ 2186              		.loc 1 104 0
+ 2187              		.cfi_startproc
+ 2188              		@ Function supports interworking.
+ 2189              		@ args = 0, pretend = 0, frame = 16
+ 2190              		@ frame_needed = 1, uses_anonymous_args = 0
+ 2191 0428 0DC0A0E1 		mov	ip, sp
+ 2192              	.LCFI6:
+ 2193              		.cfi_def_cfa_register 12
+ 2194 042c 00D82DE9 		stmfd	sp!, {fp, ip, lr, pc}
+ 2195 0430 04B04CE2 		sub	fp, ip, #4
+ 2196              		.cfi_offset 14, -8
+ 2197              		.cfi_offset 13, -12
+ 2198              		.cfi_offset 11, -16
+ 2199              	.LCFI7:
+ 2200              		.cfi_def_cfa 11, 4
+ 2201 0434 10D04DE2 		sub	sp, sp, #16
+ 2202 0438 18000BE5 		str	r0, [fp, #-24]
+ 2203 043c 1C100BE5 		str	r1, [fp, #-28]
+ 105:../sudoku_2016.c ****     int celdas_vacias;     //numero de celdas aun vacias
+ 106:../sudoku_2016.c **** 
+ 107:../sudoku_2016.c ****     /* calcula lista de candidatos, versión C */
+ 108:../sudoku_2016.c ****     celdas_vacias = sudoku_candidatos_init_c(cuadricula);
+ 2204              		.loc 1 108 0
+ 2205 0440 18001BE5 		ldr	r0, [fp, #-24]
+ 2206 0444 95FFFFEB 		bl	sudoku_candidatos_init_c
+ 2207 0448 10000BE5 		str	r0, [fp, #-16]
+ 109:../sudoku_2016.c **** 
+ 110:../sudoku_2016.c ****     /* verificar que la lista de candidatos calculada es correcta */
+ 111:../sudoku_2016.c ****     /* cuadricula_candidatos_verificar(...) */
+ 112:../sudoku_2016.c **** 
+ 113:../sudoku_2016.c ****     /* repetir para otras versiones (C optimizado, ARM, THUMB) */
+ 114:../sudoku_2016.c **** }
+ 2208              		.loc 1 114 0
+ 2209 044c 0CD04BE2 		sub	sp, fp, #12
+ 2210 0450 00689DE8 		ldmfd	sp, {fp, sp, lr}
+ 2211 0454 1EFF2FE1 		bx	lr
+ 2212              		.cfi_endproc
+ 2213              	.LFE4:
+ 2215              	.Letext0:
 DEFINED SYMBOLS
                             *ABS*:00000000 sudoku_2016.c
-C:\Users\a681061\AppData\Local\Temp\ccJ3qfPp.s:1788   .text:00000000 $a
-C:\Users\a681061\AppData\Local\Temp\ccJ3qfPp.s:1790   .text:00000000 celda_leer_valor
-C:\Users\a681061\AppData\Local\Temp\ccJ3qfPp.s:1825   .text:00000038 sudoku_candidatos_propagar_c
-C:\Users\a681061\AppData\Local\Temp\ccJ3qfPp.s:1870   .text:00000098 sudoku_candidatos_init_c
-C:\Users\a681061\AppData\Local\Temp\ccJ3qfPp.s:1905   .text:000000c8 sudoku9x9
+C:\Users\a681061\AppData\Local\Temp\ccVWX85L.s:1788   .text:00000000 $a
+C:\Users\a681061\AppData\Local\Temp\ccVWX85L.s:1790   .text:00000000 celda_leer_valor
+C:\Users\a681061\AppData\Local\Temp\ccVWX85L.s:1825   .text:00000038 sudoku_candidatos_propagar_c
+C:\Users\a681061\AppData\Local\Temp\ccVWX85L.s:2026   .text:0000029c $d
+C:\Users\a681061\AppData\Local\Temp\ccVWX85L.s:2030   .text:000002a0 $a
+C:\Users\a681061\AppData\Local\Temp\ccVWX85L.s:2032   .text:000002a0 sudoku_candidatos_init_c
+C:\Users\a681061\AppData\Local\Temp\ccVWX85L.s:2177   .text:00000424 $d
+C:\Users\a681061\AppData\Local\Temp\ccVWX85L.s:2181   .text:00000428 $a
+C:\Users\a681061\AppData\Local\Temp\ccVWX85L.s:2184   .text:00000428 sudoku9x9
                      .debug_frame:00000010 $d
 
 NO UNDEFINED SYMBOLS

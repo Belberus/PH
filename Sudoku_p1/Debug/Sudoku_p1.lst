@@ -3,33 +3,33 @@ Sudoku_p1.elf:     file format elf32-littlearm
 
 Sections:
 Idx Name          Size      VMA       LMA       File off  Algn
-  0 .text         0000011c  0c000000  0c000000  00008000  2**2
+  0 .text         0000047c  0c000000  0c000000  00008000  2**2
                   CONTENTS, ALLOC, LOAD, READONLY, CODE
-  1 .data         00000120  0c000120  0c000120  00008120  2**5
+  1 .data         00000120  0c000480  0c000480  00008480  2**5
                   CONTENTS, ALLOC, LOAD, DATA
-  2 .ARM.attributes 0000002e  00000000  00000000  00008240  2**0
+  2 .ARM.attributes 0000002e  00000000  00000000  000085a0  2**0
                   CONTENTS, READONLY
-  3 .comment      0000002a  00000000  00000000  0000826e  2**0
+  3 .comment      0000002a  00000000  00000000  000085ce  2**0
                   CONTENTS, READONLY
-  4 .debug_line   000001c5  00000000  00000000  00008298  2**0
+  4 .debug_line   0000023d  00000000  00000000  000085f8  2**0
                   CONTENTS, READONLY, DEBUGGING
-  5 .debug_info   0000020f  00000000  00000000  0000845d  2**0
+  5 .debug_info   000002b4  00000000  00000000  00008835  2**0
                   CONTENTS, READONLY, DEBUGGING
-  6 .debug_abbrev 000000c9  00000000  00000000  0000866c  2**0
+  6 .debug_abbrev 000000ee  00000000  00000000  00008ae9  2**0
                   CONTENTS, READONLY, DEBUGGING
-  7 .debug_aranges 00000040  00000000  00000000  00008738  2**3
+  7 .debug_aranges 00000040  00000000  00000000  00008bd8  2**3
                   CONTENTS, READONLY, DEBUGGING
-  8 .debug_macinfo 00003aae  00000000  00000000  00008778  2**0
+  8 .debug_macinfo 00003aae  00000000  00000000  00008c18  2**0
                   CONTENTS, READONLY, DEBUGGING
-  9 .debug_loc    000000b0  00000000  00000000  0000c226  2**0
+  9 .debug_loc    000000b0  00000000  00000000  0000c6c6  2**0
                   CONTENTS, READONLY, DEBUGGING
- 10 .debug_pubnames 00000020  00000000  00000000  0000c2d6  2**0
+ 10 .debug_pubnames 00000020  00000000  00000000  0000c776  2**0
                   CONTENTS, READONLY, DEBUGGING
- 11 .debug_pubtypes 00000035  00000000  00000000  0000c2f6  2**0
+ 11 .debug_pubtypes 00000035  00000000  00000000  0000c796  2**0
                   CONTENTS, READONLY, DEBUGGING
- 12 .debug_str    00000132  00000000  00000000  0000c32b  2**0
+ 12 .debug_str    00000185  00000000  00000000  0000c7cb  2**0
                   CONTENTS, READONLY, DEBUGGING
- 13 .debug_frame  00000090  00000000  00000000  0000c460  2**2
+ 13 .debug_frame  00000090  00000000  00000000  0000c950  2**2
                   CONTENTS, READONLY, DEBUGGING
 
 Disassembly of section .text:
@@ -72,8 +72,8 @@ Reset_Handler:
 stop:
         B       stop        /*  end of program */
  c000018:	eafffffe 	b	c000018 <stop>
- c00001c:	0c000120 	.word	0x0c000120
- c000020:	0c0000ec 	.word	0x0c0000ec
+ c00001c:	0c000480 	.word	0x0c000480
+ c000020:	0c00044c 	.word	0x0c00044c
 
 0c000024 <celda_leer_valor>:
 
@@ -109,89 +109,396 @@ sudoku_candidatos_propagar_c(CELDA cuadricula[NUM_FILAS][NUM_COLUMNAS],
  c00005c:	e1a0c00d 	mov	ip, sp
  c000060:	e92dd800 	push	{fp, ip, lr, pc}
  c000064:	e24cb004 	sub	fp, ip, #4
- c000068:	e24dd010 	sub	sp, sp, #16
- c00006c:	e50b0018 	str	r0, [fp, #-24]	; 0xffffffe8
+ c000068:	e24dd030 	sub	sp, sp, #48	; 0x30
+ c00006c:	e50b0038 	str	r0, [fp, #-56]	; 0xffffffc8
  c000070:	e1a03002 	mov	r3, r2
  c000074:	e1a02001 	mov	r2, r1
- c000078:	e54b2019 	strb	r2, [fp, #-25]	; 0xffffffe7
- c00007c:	e54b301a 	strb	r3, [fp, #-26]	; 0xffffffe6
+ c000078:	e54b2039 	strb	r2, [fp, #-57]	; 0xffffffc7
+ c00007c:	e54b303a 	strb	r3, [fp, #-58]	; 0xffffffc6
     /* valor que se propaga */
     uint8_t valor = celda_leer_valor(cuadricula[fila][columna]);
- c000080:	e55b3019 	ldrb	r3, [fp, #-25]	; 0xffffffe7
+ c000080:	e55b3039 	ldrb	r3, [fp, #-57]	; 0xffffffc7
  c000084:	e1a03283 	lsl	r3, r3, #5
- c000088:	e51b2018 	ldr	r2, [fp, #-24]	; 0xffffffe8
+ c000088:	e51b2038 	ldr	r2, [fp, #-56]	; 0xffffffc8
  c00008c:	e0822003 	add	r2, r2, r3
- c000090:	e55b301a 	ldrb	r3, [fp, #-26]	; 0xffffffe6
+ c000090:	e55b303a 	ldrb	r3, [fp, #-58]	; 0xffffffc6
  c000094:	e1a03083 	lsl	r3, r3, #1
  c000098:	e0823003 	add	r3, r2, r3
  c00009c:	e1d330b0 	ldrh	r3, [r3]
  c0000a0:	e1a00003 	mov	r0, r3
  c0000a4:	ebffffde 	bl	c000024 <celda_leer_valor>
  c0000a8:	e1a03000 	mov	r3, r0
- c0000ac:	e54b300d 	strb	r3, [fp, #-13]
+ c0000ac:	e54b3019 	strb	r3, [fp, #-25]	; 0xffffffe7
+    /* filtro base rotado "valor" veces */
+    uint16_t filtro = (0x0008 << (valor));
+ c0000b0:	e55b3019 	ldrb	r3, [fp, #-25]	; 0xffffffe7
+ c0000b4:	e3a02008 	mov	r2, #8
+ c0000b8:	e1a03312 	lsl	r3, r2, r3
+ c0000bc:	e14b31bc 	strh	r3, [fp, #-28]	; 0xffffffe4
+    /* nuevo valor */
+    uint16_t nuevoValor = ~filtro;
+ c0000c0:	e15b31bc 	ldrh	r3, [fp, #-28]	; 0xffffffe4
+ c0000c4:	e1e03003 	mvn	r3, r3
+ c0000c8:	e14b31be 	strh	r3, [fp, #-30]	; 0xffffffe2
+
+    int i,x,y;
 
     /* recorrer fila descartando valor de listas candidatos */
-    /* recorrer columna descartando valor de listas candidatos */
-    /* recorrer region descartando valor de listas candidatos */
-}
- c0000b0:	e24bd00c 	sub	sp, fp, #12
- c0000b4:	e89d6800 	ldm	sp, {fp, sp, lr}
- c0000b8:	e12fff1e 	bx	lr
+    for(i=0; i<9;i++){
+ c0000cc:	e3a03000 	mov	r3, #0
+ c0000d0:	e50b3010 	str	r3, [fp, #-16]
+ c0000d4:	ea000016 	b	c000134 <sudoku_candidatos_propagar_c+0xd8>
+    	cuadricula[fila][i] = (cuadricula[fila][i] & nuevoValor);
+ c0000d8:	e55b3039 	ldrb	r3, [fp, #-57]	; 0xffffffc7
+ c0000dc:	e1a03283 	lsl	r3, r3, #5
+ c0000e0:	e51b2038 	ldr	r2, [fp, #-56]	; 0xffffffc8
+ c0000e4:	e0821003 	add	r1, r2, r3
+ c0000e8:	e55b3039 	ldrb	r3, [fp, #-57]	; 0xffffffc7
+ c0000ec:	e1a03283 	lsl	r3, r3, #5
+ c0000f0:	e51b2038 	ldr	r2, [fp, #-56]	; 0xffffffc8
+ c0000f4:	e0822003 	add	r2, r2, r3
+ c0000f8:	e51b3010 	ldr	r3, [fp, #-16]
+ c0000fc:	e1a03083 	lsl	r3, r3, #1
+ c000100:	e0823003 	add	r3, r2, r3
+ c000104:	e1d320b0 	ldrh	r2, [r3]
+ c000108:	e15b31be 	ldrh	r3, [fp, #-30]	; 0xffffffe2
+ c00010c:	e0023003 	and	r3, r2, r3
+ c000110:	e1a03803 	lsl	r3, r3, #16
+ c000114:	e1a02823 	lsr	r2, r3, #16
+ c000118:	e51b3010 	ldr	r3, [fp, #-16]
+ c00011c:	e1a03083 	lsl	r3, r3, #1
+ c000120:	e0813003 	add	r3, r1, r3
+ c000124:	e1c320b0 	strh	r2, [r3]
+    uint16_t nuevoValor = ~filtro;
 
-0c0000bc <sudoku_candidatos_init_c>:
+    int i,x,y;
+
+    /* recorrer fila descartando valor de listas candidatos */
+    for(i=0; i<9;i++){
+ c000128:	e51b3010 	ldr	r3, [fp, #-16]
+ c00012c:	e2833001 	add	r3, r3, #1
+ c000130:	e50b3010 	str	r3, [fp, #-16]
+ c000134:	e51b3010 	ldr	r3, [fp, #-16]
+ c000138:	e3530008 	cmp	r3, #8
+ c00013c:	daffffe5 	ble	c0000d8 <sudoku_candidatos_propagar_c+0x7c>
+    	cuadricula[fila][i] = (cuadricula[fila][i] & nuevoValor);
+    }
+    /* recorrer columna descartando valor de listas candidatos */
+    for(i=0; i<NUM_FILAS;i++){
+ c000140:	e3a03000 	mov	r3, #0
+ c000144:	e50b3010 	str	r3, [fp, #-16]
+ c000148:	ea000016 	b	c0001a8 <sudoku_candidatos_propagar_c+0x14c>
+        	cuadricula[i][columna] = (cuadricula[i][columna] & nuevoValor);
+ c00014c:	e51b3010 	ldr	r3, [fp, #-16]
+ c000150:	e1a03283 	lsl	r3, r3, #5
+ c000154:	e51b2038 	ldr	r2, [fp, #-56]	; 0xffffffc8
+ c000158:	e0821003 	add	r1, r2, r3
+ c00015c:	e55b303a 	ldrb	r3, [fp, #-58]	; 0xffffffc6
+ c000160:	e51b2010 	ldr	r2, [fp, #-16]
+ c000164:	e1a02282 	lsl	r2, r2, #5
+ c000168:	e51b0038 	ldr	r0, [fp, #-56]	; 0xffffffc8
+ c00016c:	e0800002 	add	r0, r0, r2
+ c000170:	e55b203a 	ldrb	r2, [fp, #-58]	; 0xffffffc6
+ c000174:	e1a02082 	lsl	r2, r2, #1
+ c000178:	e0802002 	add	r2, r0, r2
+ c00017c:	e1d200b0 	ldrh	r0, [r2]
+ c000180:	e15b21be 	ldrh	r2, [fp, #-30]	; 0xffffffe2
+ c000184:	e0002002 	and	r2, r0, r2
+ c000188:	e1a02802 	lsl	r2, r2, #16
+ c00018c:	e1a02822 	lsr	r2, r2, #16
+ c000190:	e1a03083 	lsl	r3, r3, #1
+ c000194:	e0813003 	add	r3, r1, r3
+ c000198:	e1c320b0 	strh	r2, [r3]
+    /* recorrer fila descartando valor de listas candidatos */
+    for(i=0; i<9;i++){
+    	cuadricula[fila][i] = (cuadricula[fila][i] & nuevoValor);
+    }
+    /* recorrer columna descartando valor de listas candidatos */
+    for(i=0; i<NUM_FILAS;i++){
+ c00019c:	e51b3010 	ldr	r3, [fp, #-16]
+ c0001a0:	e2833001 	add	r3, r3, #1
+ c0001a4:	e50b3010 	str	r3, [fp, #-16]
+ c0001a8:	e51b3010 	ldr	r3, [fp, #-16]
+ c0001ac:	e3530008 	cmp	r3, #8
+ c0001b0:	daffffe5 	ble	c00014c <sudoku_candidatos_propagar_c+0xf0>
+        	cuadricula[i][columna] = (cuadricula[i][columna] & nuevoValor);
+    }
+    /* recorrer region descartando valor de listas candidatos */
+    int cuadrante_i = fila / 3;    // Nos dara el cuadrante en el eje Y en el que esta (1 = fila 1, 2 = fila 2, 3 = fila 3)
+ c0001b4:	e55b2039 	ldrb	r2, [fp, #-57]	; 0xffffffc7
+ c0001b8:	e59f3100 	ldr	r3, [pc, #256]	; c0002c0 <sudoku_candidatos_propagar_c+0x264>
+ c0001bc:	e0831392 	umull	r1, r3, r2, r3
+ c0001c0:	e1a030a3 	lsr	r3, r3, #1
+ c0001c4:	e20330ff 	and	r3, r3, #255	; 0xff
+ c0001c8:	e50b3024 	str	r3, [fp, #-36]	; 0xffffffdc
+    int cuadrante_j = columna / 3;    // Nos dara el cuadrante en el eje X en el que esta (1 = columna 1, 2 = columna 2, 3 = columna 3)
+ c0001cc:	e55b203a 	ldrb	r2, [fp, #-58]	; 0xffffffc6
+ c0001d0:	e59f30e8 	ldr	r3, [pc, #232]	; c0002c0 <sudoku_candidatos_propagar_c+0x264>
+ c0001d4:	e0831392 	umull	r1, r3, r2, r3
+ c0001d8:	e1a030a3 	lsr	r3, r3, #1
+ c0001dc:	e20330ff 	and	r3, r3, #255	; 0xff
+ c0001e0:	e50b3028 	str	r3, [fp, #-40]	; 0xffffffd8
+    int inicio_i = (cuadrante_i * 3);   // Segun el cuadrante empezaremos en una posicion u otra
+ c0001e4:	e51b2024 	ldr	r2, [fp, #-36]	; 0xffffffdc
+ c0001e8:	e1a03002 	mov	r3, r2
+ c0001ec:	e1a03083 	lsl	r3, r3, #1
+ c0001f0:	e0833002 	add	r3, r3, r2
+ c0001f4:	e50b302c 	str	r3, [fp, #-44]	; 0xffffffd4
+    int inicio_j = (cuadrante_j * 3);   // Segun el cuadrante empezaremos en una posicion u otra
+ c0001f8:	e51b2028 	ldr	r2, [fp, #-40]	; 0xffffffd8
+ c0001fc:	e1a03002 	mov	r3, r2
+ c000200:	e1a03083 	lsl	r3, r3, #1
+ c000204:	e0833002 	add	r3, r3, r2
+ c000208:	e50b3030 	str	r3, [fp, #-48]	; 0xffffffd0
+
+    for (y = inicio_i; y<= inicio_i +2; y++){  // Recorremos desde fila inicial (del cuadrante en cuestion) hasta fila final (del cuadrante en cuestion)
+ c00020c:	e51b302c 	ldr	r3, [fp, #-44]	; 0xffffffd4
+ c000210:	e50b3018 	str	r3, [fp, #-24]	; 0xffffffe8
+ c000214:	ea000021 	b	c0002a0 <sudoku_candidatos_propagar_c+0x244>
+        for (x = inicio_j; x<=inicio_j +2; x++){     // Recorremos desde columna inicial (del cuadrante en cuestion) hasta columna final (del cuadrante en cuestion)
+ c000218:	e51b3030 	ldr	r3, [fp, #-48]	; 0xffffffd0
+ c00021c:	e50b3014 	str	r3, [fp, #-20]	; 0xffffffec
+ c000220:	ea000016 	b	c000280 <sudoku_candidatos_propagar_c+0x224>
+            cuadricula[y][x] = (cuadricula[y][x] & nuevoValor); // Aplicamos el filtrado como en los casos anteriores
+ c000224:	e51b3018 	ldr	r3, [fp, #-24]	; 0xffffffe8
+ c000228:	e1a03283 	lsl	r3, r3, #5
+ c00022c:	e51b2038 	ldr	r2, [fp, #-56]	; 0xffffffc8
+ c000230:	e0821003 	add	r1, r2, r3
+ c000234:	e51b3018 	ldr	r3, [fp, #-24]	; 0xffffffe8
+ c000238:	e1a03283 	lsl	r3, r3, #5
+ c00023c:	e51b2038 	ldr	r2, [fp, #-56]	; 0xffffffc8
+ c000240:	e0822003 	add	r2, r2, r3
+ c000244:	e51b3014 	ldr	r3, [fp, #-20]	; 0xffffffec
+ c000248:	e1a03083 	lsl	r3, r3, #1
+ c00024c:	e0823003 	add	r3, r2, r3
+ c000250:	e1d320b0 	ldrh	r2, [r3]
+ c000254:	e15b31be 	ldrh	r3, [fp, #-30]	; 0xffffffe2
+ c000258:	e0023003 	and	r3, r2, r3
+ c00025c:	e1a03803 	lsl	r3, r3, #16
+ c000260:	e1a02823 	lsr	r2, r3, #16
+ c000264:	e51b3014 	ldr	r3, [fp, #-20]	; 0xffffffec
+ c000268:	e1a03083 	lsl	r3, r3, #1
+ c00026c:	e0813003 	add	r3, r1, r3
+ c000270:	e1c320b0 	strh	r2, [r3]
+    int cuadrante_j = columna / 3;    // Nos dara el cuadrante en el eje X en el que esta (1 = columna 1, 2 = columna 2, 3 = columna 3)
+    int inicio_i = (cuadrante_i * 3);   // Segun el cuadrante empezaremos en una posicion u otra
+    int inicio_j = (cuadrante_j * 3);   // Segun el cuadrante empezaremos en una posicion u otra
+
+    for (y = inicio_i; y<= inicio_i +2; y++){  // Recorremos desde fila inicial (del cuadrante en cuestion) hasta fila final (del cuadrante en cuestion)
+        for (x = inicio_j; x<=inicio_j +2; x++){     // Recorremos desde columna inicial (del cuadrante en cuestion) hasta columna final (del cuadrante en cuestion)
+ c000274:	e51b3014 	ldr	r3, [fp, #-20]	; 0xffffffec
+ c000278:	e2833001 	add	r3, r3, #1
+ c00027c:	e50b3014 	str	r3, [fp, #-20]	; 0xffffffec
+ c000280:	e51b3030 	ldr	r3, [fp, #-48]	; 0xffffffd0
+ c000284:	e2832002 	add	r2, r3, #2
+ c000288:	e51b3014 	ldr	r3, [fp, #-20]	; 0xffffffec
+ c00028c:	e1520003 	cmp	r2, r3
+ c000290:	aaffffe3 	bge	c000224 <sudoku_candidatos_propagar_c+0x1c8>
+    int cuadrante_i = fila / 3;    // Nos dara el cuadrante en el eje Y en el que esta (1 = fila 1, 2 = fila 2, 3 = fila 3)
+    int cuadrante_j = columna / 3;    // Nos dara el cuadrante en el eje X en el que esta (1 = columna 1, 2 = columna 2, 3 = columna 3)
+    int inicio_i = (cuadrante_i * 3);   // Segun el cuadrante empezaremos en una posicion u otra
+    int inicio_j = (cuadrante_j * 3);   // Segun el cuadrante empezaremos en una posicion u otra
+
+    for (y = inicio_i; y<= inicio_i +2; y++){  // Recorremos desde fila inicial (del cuadrante en cuestion) hasta fila final (del cuadrante en cuestion)
+ c000294:	e51b3018 	ldr	r3, [fp, #-24]	; 0xffffffe8
+ c000298:	e2833001 	add	r3, r3, #1
+ c00029c:	e50b3018 	str	r3, [fp, #-24]	; 0xffffffe8
+ c0002a0:	e51b302c 	ldr	r3, [fp, #-44]	; 0xffffffd4
+ c0002a4:	e2832002 	add	r2, r3, #2
+ c0002a8:	e51b3018 	ldr	r3, [fp, #-24]	; 0xffffffe8
+ c0002ac:	e1520003 	cmp	r2, r3
+ c0002b0:	aaffffd8 	bge	c000218 <sudoku_candidatos_propagar_c+0x1bc>
+        for (x = inicio_j; x<=inicio_j +2; x++){     // Recorremos desde columna inicial (del cuadrante en cuestion) hasta columna final (del cuadrante en cuestion)
+            cuadricula[y][x] = (cuadricula[y][x] & nuevoValor); // Aplicamos el filtrado como en los casos anteriores
+        }
+    }
+}
+ c0002b4:	e24bd00c 	sub	sp, fp, #12
+ c0002b8:	e89d6800 	ldm	sp, {fp, sp, lr}
+ c0002bc:	e12fff1e 	bx	lr
+ c0002c0:	aaaaaaab 	.word	0xaaaaaaab
+
+0c0002c4 <sudoku_candidatos_init_c>:
  * calcula todas las listas de candidatos (9x9)
  * necesario tras borrar o cambiar un valor (listas corrompidas)
  * retorna el numero de celdas vacias */
 static int
 sudoku_candidatos_init_c(CELDA cuadricula[NUM_FILAS][NUM_COLUMNAS])
 {
- c0000bc:	e1a0c00d 	mov	ip, sp
- c0000c0:	e92dd800 	push	{fp, ip, lr, pc}
- c0000c4:	e24cb004 	sub	fp, ip, #4
- c0000c8:	e24dd010 	sub	sp, sp, #16
- c0000cc:	e50b0018 	str	r0, [fp, #-24]	; 0xffffffe8
+ c0002c4:	e1a0c00d 	mov	ip, sp
+ c0002c8:	e92dd800 	push	{fp, ip, lr, pc}
+ c0002cc:	e24cb004 	sub	fp, ip, #4
+ c0002d0:	e24dd018 	sub	sp, sp, #24
+ c0002d4:	e50b0020 	str	r0, [fp, #-32]	; 0xffffffe0
     int celdas_vacias = 0;
- c0000d0:	e3a03000 	mov	r3, #0
- c0000d4:	e50b3010 	str	r3, [fp, #-16]
+ c0002d8:	e3a03000 	mov	r3, #0
+ c0002dc:	e50b3010 	str	r3, [fp, #-16]
+    int i,j;
+    /* recorrer cuadricula celda a celda */
+        /* inicializa lista de candidatos */
+	for(i=0; i<NUM_FILAS;i++){
+ c0002e0:	e3a03000 	mov	r3, #0
+ c0002e4:	e50b3014 	str	r3, [fp, #-20]	; 0xffffffec
+ c0002e8:	ea000022 	b	c000378 <sudoku_candidatos_init_c+0xb4>
+		for(j=0; j<9;j++){
+ c0002ec:	e3a03000 	mov	r3, #0
+ c0002f0:	e50b3018 	str	r3, [fp, #-24]	; 0xffffffe8
+ c0002f4:	ea000019 	b	c000360 <sudoku_candidatos_init_c+0x9c>
+			if ((cuadricula[i][j] & 0x8000) != 0x8000){	 //Si el bit P es igual a 0, inicializamos candidatos
+ c0002f8:	e51b3014 	ldr	r3, [fp, #-20]	; 0xffffffec
+ c0002fc:	e1a03283 	lsl	r3, r3, #5
+ c000300:	e51b2020 	ldr	r2, [fp, #-32]	; 0xffffffe0
+ c000304:	e0822003 	add	r2, r2, r3
+ c000308:	e51b3018 	ldr	r3, [fp, #-24]	; 0xffffffe8
+ c00030c:	e1a03083 	lsl	r3, r3, #1
+ c000310:	e0823003 	add	r3, r2, r3
+ c000314:	e1d330b0 	ldrh	r3, [r3]
+ c000318:	e1a03803 	lsl	r3, r3, #16
+ c00031c:	e1a03823 	lsr	r3, r3, #16
+ c000320:	e1a03803 	lsl	r3, r3, #16
+ c000324:	e1a03843 	asr	r3, r3, #16
+ c000328:	e3530000 	cmp	r3, #0
+ c00032c:	ba000008 	blt	c000354 <sudoku_candidatos_init_c+0x90>
+				cuadricula[i][j] = 0x1FF0;
+ c000330:	e51b3014 	ldr	r3, [fp, #-20]	; 0xffffffec
+ c000334:	e1a03283 	lsl	r3, r3, #5
+ c000338:	e51b2020 	ldr	r2, [fp, #-32]	; 0xffffffe0
+ c00033c:	e0822003 	add	r2, r2, r3
+ c000340:	e51b3018 	ldr	r3, [fp, #-24]	; 0xffffffe8
+ c000344:	e1a03083 	lsl	r3, r3, #1
+ c000348:	e0823003 	add	r3, r2, r3
+ c00034c:	e59f20f4 	ldr	r2, [pc, #244]	; c000448 <sudoku_candidatos_init_c+0x184>
+ c000350:	e1c320b0 	strh	r2, [r3]
+    int celdas_vacias = 0;
+    int i,j;
+    /* recorrer cuadricula celda a celda */
+        /* inicializa lista de candidatos */
+	for(i=0; i<NUM_FILAS;i++){
+		for(j=0; j<9;j++){
+ c000354:	e51b3018 	ldr	r3, [fp, #-24]	; 0xffffffe8
+ c000358:	e2833001 	add	r3, r3, #1
+ c00035c:	e50b3018 	str	r3, [fp, #-24]	; 0xffffffe8
+ c000360:	e51b3018 	ldr	r3, [fp, #-24]	; 0xffffffe8
+ c000364:	e3530008 	cmp	r3, #8
+ c000368:	daffffe2 	ble	c0002f8 <sudoku_candidatos_init_c+0x34>
+{
+    int celdas_vacias = 0;
+    int i,j;
+    /* recorrer cuadricula celda a celda */
+        /* inicializa lista de candidatos */
+	for(i=0; i<NUM_FILAS;i++){
+ c00036c:	e51b3014 	ldr	r3, [fp, #-20]	; 0xffffffec
+ c000370:	e2833001 	add	r3, r3, #1
+ c000374:	e50b3014 	str	r3, [fp, #-20]	; 0xffffffec
+ c000378:	e51b3014 	ldr	r3, [fp, #-20]	; 0xffffffec
+ c00037c:	e3530008 	cmp	r3, #8
+ c000380:	daffffd9 	ble	c0002ec <sudoku_candidatos_init_c+0x28>
+    /* recorrer cuadricula celda a celda */
         /* si celda tiene valor */
         /*    sudoku_candidatos_propagar_c(...); */
         /* else actualizar contador de celdas vacias */
 
+	for(i=0; i<NUM_FILAS;i++){
+ c000384:	e3a03000 	mov	r3, #0
+ c000388:	e50b3014 	str	r3, [fp, #-20]	; 0xffffffec
+ c00038c:	ea000025 	b	c000428 <sudoku_candidatos_init_c+0x164>
+		for(j=0; j<9;j++){		// Aunque haya 16 columnas, miramos solo las 9 que nos interesan
+ c000390:	e3a03000 	mov	r3, #0
+ c000394:	e50b3018 	str	r3, [fp, #-24]	; 0xffffffe8
+ c000398:	ea00001c 	b	c000410 <sudoku_candidatos_init_c+0x14c>
+			if ((cuadricula[i][j] & 0x8000) == 0x8000){	 //Si el bit P es igual a 1, hay que propagar (limpiar candidatos)
+ c00039c:	e51b3014 	ldr	r3, [fp, #-20]	; 0xffffffec
+ c0003a0:	e1a03283 	lsl	r3, r3, #5
+ c0003a4:	e51b2020 	ldr	r2, [fp, #-32]	; 0xffffffe0
+ c0003a8:	e0822003 	add	r2, r2, r3
+ c0003ac:	e51b3018 	ldr	r3, [fp, #-24]	; 0xffffffe8
+ c0003b0:	e1a03083 	lsl	r3, r3, #1
+ c0003b4:	e0823003 	add	r3, r2, r3
+ c0003b8:	e1d330b0 	ldrh	r3, [r3]
+ c0003bc:	e1a03803 	lsl	r3, r3, #16
+ c0003c0:	e1a03823 	lsr	r3, r3, #16
+ c0003c4:	e1a03803 	lsl	r3, r3, #16
+ c0003c8:	e1a03843 	asr	r3, r3, #16
+ c0003cc:	e3530000 	cmp	r3, #0
+ c0003d0:	aa000008 	bge	c0003f8 <sudoku_candidatos_init_c+0x134>
+				sudoku_candidatos_propagar_c(cuadricula,i,j);
+ c0003d4:	e51b3014 	ldr	r3, [fp, #-20]	; 0xffffffec
+ c0003d8:	e20320ff 	and	r2, r3, #255	; 0xff
+ c0003dc:	e51b3018 	ldr	r3, [fp, #-24]	; 0xffffffe8
+ c0003e0:	e20330ff 	and	r3, r3, #255	; 0xff
+ c0003e4:	e51b0020 	ldr	r0, [fp, #-32]	; 0xffffffe0
+ c0003e8:	e1a01002 	mov	r1, r2
+ c0003ec:	e1a02003 	mov	r2, r3
+ c0003f0:	ebffff19 	bl	c00005c <sudoku_candidatos_propagar_c>
+ c0003f4:	ea000002 	b	c000404 <sudoku_candidatos_init_c+0x140>
+			}else celdas_vacias++;
+ c0003f8:	e51b3010 	ldr	r3, [fp, #-16]
+ c0003fc:	e2833001 	add	r3, r3, #1
+ c000400:	e50b3010 	str	r3, [fp, #-16]
+        /* si celda tiene valor */
+        /*    sudoku_candidatos_propagar_c(...); */
+        /* else actualizar contador de celdas vacias */
+
+	for(i=0; i<NUM_FILAS;i++){
+		for(j=0; j<9;j++){		// Aunque haya 16 columnas, miramos solo las 9 que nos interesan
+ c000404:	e51b3018 	ldr	r3, [fp, #-24]	; 0xffffffe8
+ c000408:	e2833001 	add	r3, r3, #1
+ c00040c:	e50b3018 	str	r3, [fp, #-24]	; 0xffffffe8
+ c000410:	e51b3018 	ldr	r3, [fp, #-24]	; 0xffffffe8
+ c000414:	e3530008 	cmp	r3, #8
+ c000418:	daffffdf 	ble	c00039c <sudoku_candidatos_init_c+0xd8>
+    /* recorrer cuadricula celda a celda */
+        /* si celda tiene valor */
+        /*    sudoku_candidatos_propagar_c(...); */
+        /* else actualizar contador de celdas vacias */
+
+	for(i=0; i<NUM_FILAS;i++){
+ c00041c:	e51b3014 	ldr	r3, [fp, #-20]	; 0xffffffec
+ c000420:	e2833001 	add	r3, r3, #1
+ c000424:	e50b3014 	str	r3, [fp, #-20]	; 0xffffffec
+ c000428:	e51b3014 	ldr	r3, [fp, #-20]	; 0xffffffec
+ c00042c:	e3530008 	cmp	r3, #8
+ c000430:	daffffd6 	ble	c000390 <sudoku_candidatos_init_c+0xcc>
+				sudoku_candidatos_propagar_c(cuadricula,i,j);
+			}else celdas_vacias++;
+		}
+	}
     /* retorna el numero de celdas vacias */
     return (celdas_vacias);
- c0000d8:	e51b3010 	ldr	r3, [fp, #-16]
+ c000434:	e51b3010 	ldr	r3, [fp, #-16]
 }
- c0000dc:	e1a00003 	mov	r0, r3
- c0000e0:	e24bd00c 	sub	sp, fp, #12
- c0000e4:	e89d6800 	ldm	sp, {fp, sp, lr}
- c0000e8:	e12fff1e 	bx	lr
+ c000438:	e1a00003 	mov	r0, r3
+ c00043c:	e24bd00c 	sub	sp, fp, #12
+ c000440:	e89d6800 	ldm	sp, {fp, sp, lr}
+ c000444:	e12fff1e 	bx	lr
+ c000448:	00001ff0 	.word	0x00001ff0
 
-0c0000ec <sudoku9x9>:
+0c00044c <sudoku9x9>:
 /* *****************************************************************************
  * programa principal del juego que recibe el tablero,
  * y la señal de ready que indica que se han actualizado fila y columna */
 void
 sudoku9x9(CELDA cuadricula[NUM_FILAS][NUM_COLUMNAS], char *ready)
 {
- c0000ec:	e1a0c00d 	mov	ip, sp
- c0000f0:	e92dd800 	push	{fp, ip, lr, pc}
- c0000f4:	e24cb004 	sub	fp, ip, #4
- c0000f8:	e24dd010 	sub	sp, sp, #16
- c0000fc:	e50b0018 	str	r0, [fp, #-24]	; 0xffffffe8
- c000100:	e50b101c 	str	r1, [fp, #-28]	; 0xffffffe4
+ c00044c:	e1a0c00d 	mov	ip, sp
+ c000450:	e92dd800 	push	{fp, ip, lr, pc}
+ c000454:	e24cb004 	sub	fp, ip, #4
+ c000458:	e24dd010 	sub	sp, sp, #16
+ c00045c:	e50b0018 	str	r0, [fp, #-24]	; 0xffffffe8
+ c000460:	e50b101c 	str	r1, [fp, #-28]	; 0xffffffe4
     int celdas_vacias;     //numero de celdas aun vacias
 
     /* calcula lista de candidatos, versión C */
     celdas_vacias = sudoku_candidatos_init_c(cuadricula);
- c000104:	e51b0018 	ldr	r0, [fp, #-24]	; 0xffffffe8
- c000108:	ebffffeb 	bl	c0000bc <sudoku_candidatos_init_c>
- c00010c:	e50b0010 	str	r0, [fp, #-16]
+ c000464:	e51b0018 	ldr	r0, [fp, #-24]	; 0xffffffe8
+ c000468:	ebffff95 	bl	c0002c4 <sudoku_candidatos_init_c>
+ c00046c:	e50b0010 	str	r0, [fp, #-16]
 
     /* verificar que la lista de candidatos calculada es correcta */
     /* cuadricula_candidatos_verificar(...) */
 
     /* repetir para otras versiones (C optimizado, ARM, THUMB) */
 }
- c000110:	e24bd00c 	sub	sp, fp, #12
- c000114:	e89d6800 	ldm	sp, {fp, sp, lr}
- c000118:	e12fff1e 	bx	lr
+ c000470:	e24bd00c 	sub	sp, fp, #12
+ c000474:	e89d6800 	ldm	sp, {fp, sp, lr}
+ c000478:	e12fff1e 	bx	lr

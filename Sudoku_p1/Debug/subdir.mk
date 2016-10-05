@@ -7,9 +7,11 @@ C_SRCS += \
 ../sudoku_2016.c 
 
 ASM_SRCS += \
+../funciones_asm.asm \
 ../init_b.asm 
 
 OBJS += \
+./funciones_asm.o \
 ./init_b.o \
 ./sudoku_2016.o 
 
@@ -17,6 +19,7 @@ C_DEPS += \
 ./sudoku_2016.d 
 
 ASM_DEPS += \
+./funciones_asm.d \
 ./init_b.d 
 
 
