@@ -76,6 +76,7 @@ sudoku_candidatos_propagar_arm:
 	MOV r7,r7 LSL #r5	// Mascara del valor
 	MVN r7,r7	// Invertimos el valor
 
+// PROPAGAMOS POR LA FILA
 forFila:
 	LDR r8,[r5]
 	AND r8,r8,r7	// Aplicamos la mascara
@@ -86,8 +87,11 @@ forFila:
 	CMP r4,#9
 	BNE forFila
 
+// PREPARAMOS LOS VALORES
 	MOV r5,#0
 	ADD r5,r0,r2	// Nos situamos en la primera posicion de la columna 
+
+// PROPAGAMOS POR COLUMNA
 forColum:
 	LDR r8,[r5]
 	AND r8,r8,r7	// Aplicamos la mascara
@@ -98,10 +102,59 @@ forColum:
 	CMP r4,#9
 	BNE forColumna
 
+// PREPARAMOS LOS DATOS
+	MOV r4,#0	// Resultado division fila
+	MOV r9,#0	// Resultado division columna
+	PUSH{r0,r1,r2}	// Guardamos los parametros para no modificarlos
 
+divFila:
+	CMP r1,#3
+	SUBGE r1,r1,#3
+	ADDGE r4,r4,#1 
+	BGE divFila
 
+divCol:
+	CMP r2,#3
+	SUBGE r2,r2,#3
+	ADDGE r9,r9,#1
+	BGE divCol
+
+	MOV r1, #3
+	MUL r4,r4, r1	// Posicion inicial fila
+	MUL r9,r9, r1	// Posicion inicial columna
+	
+	// Nos situamos en la posicion inicial del Sector
+	ADD r3, r0, r4 LSL #5
+	ADD r3,r3, r9 LSL #1
+
+	POP{r0,r1,r2}	// Recuperamos el valor de los parametrosç
+
+	MOV r1, #0	// Contador filas
+	MOV r2, #0	// Contador columnas
+/*	
+	r0 cuadricula
+	r1 contador
+	r2 contador
+	r3 posicion inicial del cuadrante 
+	r7 mascara pablera ya preparado
+*/
+
+// PROPAGAMOS POR LA REGION
+forRegion:
+	LDR r8,[r3]
+	AND r8,r8,r7	// Aplicamos la mascara
+	STR r8,[r3]
+
+	ADD r1,r1,#1	// Incrementamos contador de fila	
+	CMP r1,#3
+	ADDGE r3,r3, #26	// Saltamos a la fila siguiente
+	MOVGE r1,r1,#0
+	ADDGE r2,r2,#1
+	ADDLT r3,r3,#2	// Si no toca saltar fila avanzamos a la siguiente posicion
+
+	CMP r2,#3
+	BLT forRegion
 
 	POP{pc}	// Volvemos a la rutina init
-
 
 
