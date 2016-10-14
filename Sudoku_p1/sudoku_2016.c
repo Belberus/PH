@@ -105,8 +105,9 @@ sudoku9x9(CELDA cuadricula[NUM_FILAS][NUM_COLUMNAS], char *ready)
     int celdas_vacias;     //numero de celdas aun vacias
 
     /* calcula lista de candidatos, versión C */
-    celdas_vacias = sudoku_candidatos_init_c(cuadricula);
+    //celdas_vacias = sudoku_candidatos_init_c(cuadricula);
 
+    sudoku_candidatos_init_arm(cuadricula);
     /* verificar que la lista de candidatos calculada es correcta */
     /* cuadricula_candidatos_verificar(...) */
 

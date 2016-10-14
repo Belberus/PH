@@ -525,7 +525,7 @@
  2186              		.loc 1 104 0
  2187              		.cfi_startproc
  2188              		@ Function supports interworking.
- 2189              		@ args = 0, pretend = 0, frame = 16
+ 2189              		@ args = 0, pretend = 0, frame = 8
  2190              		@ frame_needed = 1, uses_anonymous_args = 0
  2191 0428 0DC0A0E1 		mov	ip, sp
  2192              	.LCFI6:
@@ -537,41 +537,42 @@
  2198              		.cfi_offset 11, -16
  2199              	.LCFI7:
  2200              		.cfi_def_cfa 11, 4
- 2201 0434 10D04DE2 		sub	sp, sp, #16
- 2202 0438 18000BE5 		str	r0, [fp, #-24]
- 2203 043c 1C100BE5 		str	r1, [fp, #-28]
+ 2201 0434 08D04DE2 		sub	sp, sp, #8
+ 2202 0438 10000BE5 		str	r0, [fp, #-16]
+ 2203 043c 14100BE5 		str	r1, [fp, #-20]
  105:../sudoku_2016.c ****     int celdas_vacias;     //numero de celdas aun vacias
  106:../sudoku_2016.c **** 
  107:../sudoku_2016.c ****     /* calcula lista de candidatos, versión C */
- 108:../sudoku_2016.c ****     celdas_vacias = sudoku_candidatos_init_c(cuadricula);
- 2204              		.loc 1 108 0
- 2205 0440 18001BE5 		ldr	r0, [fp, #-24]
- 2206 0444 95FFFFEB 		bl	sudoku_candidatos_init_c
- 2207 0448 10000BE5 		str	r0, [fp, #-16]
+ 108:../sudoku_2016.c ****     //celdas_vacias = sudoku_candidatos_init_c(cuadricula);
  109:../sudoku_2016.c **** 
- 110:../sudoku_2016.c ****     /* verificar que la lista de candidatos calculada es correcta */
- 111:../sudoku_2016.c ****     /* cuadricula_candidatos_verificar(...) */
- 112:../sudoku_2016.c **** 
- 113:../sudoku_2016.c ****     /* repetir para otras versiones (C optimizado, ARM, THUMB) */
- 114:../sudoku_2016.c **** }
- 2208              		.loc 1 114 0
- 2209 044c 0CD04BE2 		sub	sp, fp, #12
- 2210 0450 00689DE8 		ldmfd	sp, {fp, sp, lr}
- 2211 0454 1EFF2FE1 		bx	lr
- 2212              		.cfi_endproc
- 2213              	.LFE4:
- 2215              	.Letext0:
+ 110:../sudoku_2016.c ****     sudoku_candidatos_init_arm(cuadricula);
+ 2204              		.loc 1 110 0
+ 2205 0440 10001BE5 		ldr	r0, [fp, #-16]
+ 2206 0444 FEFFFFEB 		bl	sudoku_candidatos_init_arm
+ 111:../sudoku_2016.c ****     /* verificar que la lista de candidatos calculada es correcta */
+ 112:../sudoku_2016.c ****     /* cuadricula_candidatos_verificar(...) */
+ 113:../sudoku_2016.c **** 
+ 114:../sudoku_2016.c ****     /* repetir para otras versiones (C optimizado, ARM, THUMB) */
+ 115:../sudoku_2016.c **** }
+ 2207              		.loc 1 115 0
+ 2208 0448 0CD04BE2 		sub	sp, fp, #12
+ 2209 044c 00689DE8 		ldmfd	sp, {fp, sp, lr}
+ 2210 0450 1EFF2FE1 		bx	lr
+ 2211              		.cfi_endproc
+ 2212              	.LFE4:
+ 2214              	.Letext0:
 DEFINED SYMBOLS
                             *ABS*:00000000 sudoku_2016.c
-C:\Users\a681061\AppData\Local\Temp\ccVWX85L.s:1788   .text:00000000 $a
-C:\Users\a681061\AppData\Local\Temp\ccVWX85L.s:1790   .text:00000000 celda_leer_valor
-C:\Users\a681061\AppData\Local\Temp\ccVWX85L.s:1825   .text:00000038 sudoku_candidatos_propagar_c
-C:\Users\a681061\AppData\Local\Temp\ccVWX85L.s:2026   .text:0000029c $d
-C:\Users\a681061\AppData\Local\Temp\ccVWX85L.s:2030   .text:000002a0 $a
-C:\Users\a681061\AppData\Local\Temp\ccVWX85L.s:2032   .text:000002a0 sudoku_candidatos_init_c
-C:\Users\a681061\AppData\Local\Temp\ccVWX85L.s:2177   .text:00000424 $d
-C:\Users\a681061\AppData\Local\Temp\ccVWX85L.s:2181   .text:00000428 $a
-C:\Users\a681061\AppData\Local\Temp\ccVWX85L.s:2184   .text:00000428 sudoku9x9
+C:\Users\Belbus\AppData\Local\Temp\ccNPXaKe.s:1788   .text:00000000 $a
+C:\Users\Belbus\AppData\Local\Temp\ccNPXaKe.s:1790   .text:00000000 celda_leer_valor
+C:\Users\Belbus\AppData\Local\Temp\ccNPXaKe.s:1825   .text:00000038 sudoku_candidatos_propagar_c
+C:\Users\Belbus\AppData\Local\Temp\ccNPXaKe.s:2026   .text:0000029c $d
+C:\Users\Belbus\AppData\Local\Temp\ccNPXaKe.s:2030   .text:000002a0 $a
+C:\Users\Belbus\AppData\Local\Temp\ccNPXaKe.s:2032   .text:000002a0 sudoku_candidatos_init_c
+C:\Users\Belbus\AppData\Local\Temp\ccNPXaKe.s:2177   .text:00000424 $d
+C:\Users\Belbus\AppData\Local\Temp\ccNPXaKe.s:2181   .text:00000428 $a
+C:\Users\Belbus\AppData\Local\Temp\ccNPXaKe.s:2184   .text:00000428 sudoku9x9
                      .debug_frame:00000010 $d
 
-NO UNDEFINED SYMBOLS
+UNDEFINED SYMBOLS
+sudoku_candidatos_init_arm

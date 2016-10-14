@@ -1,6 +1,6 @@
 eclipse.preferences.version=1
-environment/project/org.eclipse.cdt.cross.arm.gnu.sourcery.windows.elf.debug.1097794261/PATH/delimiter=;
-environment/project/org.eclipse.cdt.cross.arm.gnu.sourcery.windows.elf.debug.1097794261/PATH/operation=append
-environment/project/org.eclipse.cdt.cross.arm.gnu.sourcery.windows.elf.debug.1097794261/PATH/value=C\:\\Program Files\\EclipseARM\\sourcery-g++-lite-arm-2011.03\\bin
-environment/project/org.eclipse.cdt.cross.arm.gnu.sourcery.windows.elf.debug.1097794261/append=true
-environment/project/org.eclipse.cdt.cross.arm.gnu.sourcery.windows.elf.debug.1097794261/appendContributed=true
+environment/project/org.eclipse.cdt.cross.arm.gnu.sourcery.windows.elf.debug.904654516/PATH/delimiter=;
+environment/project/org.eclipse.cdt.cross.arm.gnu.sourcery.windows.elf.debug.904654516/PATH/operation=replace
+environment/project/org.eclipse.cdt.cross.arm.gnu.sourcery.windows.elf.debug.904654516/PATH/value=D\:/Aplicaciones/Eclipse/EclipseARM/eclipse/jre/bin;D\:/Aplicaciones/Eclipse/EclipseARM/eclipse/jre/lib/i386;C\:\\WINDOWS\\system32;C\:\\WINDOWS;C\:\\WINDOWS\\System32\\Wbem;C\:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\;C\:\\Program Files (x86)\\AMD\\ATI.ACE\\Core-Static;C\:\\Program Files (x86)\\ATI Technologies\\ATI.ACE\\Core-Static;C\:\\Program Files (x86)\\Skype\\Phone\\;C\:\\Users\\Belbus\\AppData\\Local\\Microsoft\\WindowsApps;;D\:\\Aplicaciones\\Eclipse\\EclipseARM\\eclipse;D\:\\Aplicaciones\\Eclipse\\EclipseARM\\sourcery-g++-lite-arm-2011.03\\bin
+environment/project/org.eclipse.cdt.cross.arm.gnu.sourcery.windows.elf.debug.904654516/append=true
+environment/project/org.eclipse.cdt.cross.arm.gnu.sourcery.windows.elf.debug.904654516/appendContributed=true

@@ -43,7 +43,7 @@ all: Sudoku_p1.elf secondary-outputs
 Sudoku_p1.elf: $(OBJS) $(USER_OBJS)
 	@echo 'Building target: $@'
 	@echo 'Invoking: ARM Sourcery Windows GCC C Linker'
-	arm-none-eabi-gcc -T"C:\Users\a681061\workspace\Proyecto1ARM\ld_script.ld" -nostartfiles -Wl,-Map,Sudoku_p1.map -mcpu=arm7tdmi -g3 -gdwarf-2 -o "Sudoku_p1.elf" $(OBJS) $(USER_OBJS) $(LIBS)
+	arm-none-eabi-gcc -T"D:\workspace\Sudoku_p1\ld_script.ld" -nostartfiles -Wl,-Map,Sudoku_p1.map -mcpu=arm7tdmi -g3 -gdwarf-2 -o "Sudoku_p1.elf" $(OBJS) $(USER_OBJS) $(LIBS)
 	@echo 'Finished building target: $@'
 	@echo ' '
 

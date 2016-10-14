@@ -1,8 +1,0 @@
-C:
-Numero instrucciones: 23
-
-ARM:
-Numero instrucciones: 5
-
-THUMBS:
-Numero instrucciones: 7
